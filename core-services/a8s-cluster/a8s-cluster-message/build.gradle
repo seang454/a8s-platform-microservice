@@ -1,0 +1,8 @@
+plugins {
+    id 'java-library'
+}
+
+dependencies {
+    api project(':common-libraries:a8s-common-events')
+    implementation 'org.springframework.cloud:spring-cloud-starter-stream-kafka'
+}

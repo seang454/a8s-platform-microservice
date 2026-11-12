@@ -1,0 +1,178 @@
+rootProject.name = 'a8s-platform'
+
+// ==========================================
+// 1. COMMON LIBRARIES
+// ==========================================
+include 'common-libraries:a8s-common-core'
+include 'common-libraries:a8s-common-security'
+include 'common-libraries:a8s-common-events'
+
+// ==========================================
+// 2. SPRING CLOUD (EDGE & FOUNDATION)
+// ==========================================
+include 'spring-cloud:gateway-server'
+include 'spring-cloud:front-bff'
+include 'spring-cloud:admin-bff'
+include 'spring-cloud:eurekaserver'
+include 'spring-cloud:configserver'
+include 'spring-cloud:iam-service'
+
+// ==========================================
+// 3. CORE CONTROL PLANE (CANONICAL HEXAGONAL + ACL)
+// ==========================================
+
+// a8s-cluster (BYOK Automated Bootstrap Engine)
+include 'core-services:a8s-cluster:a8s-cluster-api'
+include 'core-services:a8s-cluster:a8s-cluster-domain:a8s-cluster-domain-core'
+include 'core-services:a8s-cluster:a8s-cluster-domain:a8s-cluster-application-service'
+include 'core-services:a8s-cluster:a8s-cluster-application'
+include 'core-services:a8s-cluster:a8s-cluster-infrastructure-helm'
+include 'core-services:a8s-cluster:a8s-cluster-infrastructure-vault'
+include 'core-services:a8s-cluster:a8s-cluster-dataaccess'
+include 'core-services:a8s-cluster:a8s-cluster-message'
+include 'core-services:a8s-cluster:a8s-cluster-main'
+
+// a8s-dbaas (CQRS DBaaS Provisioning Engine)
+include 'core-services:a8s-dbaas:a8s-dbaas-api'
+include 'core-services:a8s-dbaas:a8s-dbaas-command-service:dbaas-command-domain:dbaas-command-domain-core'
+include 'core-services:a8s-dbaas:a8s-dbaas-command-service:dbaas-command-domain:dbaas-command-application-service'
+include 'core-services:a8s-dbaas:a8s-dbaas-command-service:dbaas-command-application'
+include 'core-services:a8s-dbaas:a8s-dbaas-command-service:dbaas-command-infrastructure-k8s'
+include 'core-services:a8s-dbaas:a8s-dbaas-command-service:dbaas-command-dataaccess'
+include 'core-services:a8s-dbaas:a8s-dbaas-command-service:dbaas-command-message'
+include 'core-services:a8s-dbaas:a8s-dbaas-command-service:dbaas-command-main'
+include 'core-services:a8s-dbaas:a8s-dbaas-query-service:dbaas-query-domain:dbaas-query-domain-core'
+include 'core-services:a8s-dbaas:a8s-dbaas-query-service:dbaas-query-domain:dbaas-query-application-service'
+include 'core-services:a8s-dbaas:a8s-dbaas-query-service:dbaas-query-application'
+include 'core-services:a8s-dbaas:a8s-dbaas-query-service:dbaas-query-dataaccess'
+include 'core-services:a8s-dbaas:a8s-dbaas-query-service:dbaas-query-main'
+
+// a8s-workspace (CQRS Workspace & Multi-Tenancy Engine)
+include 'core-services:a8s-workspace:a8s-workspace-api'
+include 'core-services:a8s-workspace:a8s-workspace-command-service:workspace-command-domain:workspace-command-domain-core'
+include 'core-services:a8s-workspace:a8s-workspace-command-service:workspace-command-domain:workspace-command-application-service'
+include 'core-services:a8s-workspace:a8s-workspace-command-service:workspace-command-application'
+include 'core-services:a8s-workspace:a8s-workspace-command-service:workspace-command-dataaccess'
+include 'core-services:a8s-workspace:a8s-workspace-command-service:workspace-command-message'
+include 'core-services:a8s-workspace:a8s-workspace-command-service:workspace-command-main'
+include 'core-services:a8s-workspace:a8s-workspace-query-service:workspace-query-domain'
+include 'core-services:a8s-workspace:a8s-workspace-query-service:workspace-query-application'
+include 'core-services:a8s-workspace:a8s-workspace-query-service:workspace-query-dataaccess'
+include 'core-services:a8s-workspace:a8s-workspace-query-service:workspace-query-main'
+
+// a8s-orchestrator-service (CI/CD & GitOps Engine)
+include 'core-services:a8s-orchestrator-service:orchestrator-api'
+include 'core-services:a8s-orchestrator-service:orchestrator-domain:orchestrator-domain-core'
+include 'core-services:a8s-orchestrator-service:orchestrator-domain:orchestrator-application-service'
+include 'core-services:a8s-orchestrator-service:orchestrator-application'
+include 'core-services:a8s-orchestrator-service:orchestrator-infrastructure-cicd'
+include 'core-services:a8s-orchestrator-service:orchestrator-dataaccess'
+include 'core-services:a8s-orchestrator-service:orchestrator-message'
+include 'core-services:a8s-orchestrator-service:orchestrator-main'
+
+// a8s-git-integration-service (Git Provider Webhook Engine)
+include 'core-services:a8s-git-integration-service:git-domain:git-domain-core'
+include 'core-services:a8s-git-integration-service:git-domain:git-application-service'
+include 'core-services:a8s-git-integration-service:git-application'
+include 'core-services:a8s-git-integration-service:git-infrastructure-providers'
+include 'core-services:a8s-git-integration-service:git-dataaccess'
+include 'core-services:a8s-git-integration-service:git-message'
+include 'core-services:a8s-git-integration-service:git-main'
+
+// ==========================================
+// 4. DEVELOPER TOOLS (CANONICAL HEXAGONAL + ACL)
+// ==========================================
+
+// a8s-secret-manager-service
+include 'dev-tools:a8s-secret-manager-service:secret-api'
+include 'dev-tools:a8s-secret-manager-service:secret-domain:secret-domain-core'
+include 'dev-tools:a8s-secret-manager-service:secret-domain:secret-application-service'
+include 'dev-tools:a8s-secret-manager-service:secret-application'
+include 'dev-tools:a8s-secret-manager-service:secret-infrastructure-vault'
+include 'dev-tools:a8s-secret-manager-service:secret-dataaccess'
+include 'dev-tools:a8s-secret-manager-service:secret-main'
+
+// a8s-terminal-console-service
+include 'dev-tools:a8s-terminal-console-service:terminal-domain:terminal-domain-core'
+include 'dev-tools:a8s-terminal-console-service:terminal-domain:terminal-application-service'
+include 'dev-tools:a8s-terminal-console-service:terminal-application'
+include 'dev-tools:a8s-terminal-console-service:terminal-infrastructure-k8s'
+include 'dev-tools:a8s-terminal-console-service:terminal-main'
+
+// a8s-dns-ingress-service
+include 'dev-tools:a8s-dns-ingress-service:dns-api'
+include 'dev-tools:a8s-dns-ingress-service:dns-domain:dns-domain-core'
+include 'dev-tools:a8s-dns-ingress-service:dns-domain:dns-application-service'
+include 'dev-tools:a8s-dns-ingress-service:dns-application'
+include 'dev-tools:a8s-dns-ingress-service:dns-infrastructure-cloudflare'
+include 'dev-tools:a8s-dns-ingress-service:dns-dataaccess'
+include 'dev-tools:a8s-dns-ingress-service:dns-main'
+
+// ==========================================
+// 5. OPERATIONAL SERVICES (CANONICAL HEXAGONAL + ACL)
+// ==========================================
+
+// a8s-billing-service
+include 'operational-services:a8s-billing-service:billing-api'
+include 'operational-services:a8s-billing-service:billing-domain:billing-domain-core'
+include 'operational-services:a8s-billing-service:billing-domain:billing-application-service'
+include 'operational-services:a8s-billing-service:billing-application'
+include 'operational-services:a8s-billing-service:billing-infrastructure-payment'
+include 'operational-services:a8s-billing-service:billing-dataaccess'
+include 'operational-services:a8s-billing-service:billing-message'
+include 'operational-services:a8s-billing-service:billing-main'
+
+// a8s-backup-service
+include 'operational-services:a8s-backup-service:backup-api'
+include 'operational-services:a8s-backup-service:backup-domain:backup-domain-core'
+include 'operational-services:a8s-backup-service:backup-domain:backup-application-service'
+include 'operational-services:a8s-backup-service:backup-application'
+include 'operational-services:a8s-backup-service:backup-infrastructure-s3'
+include 'operational-services:a8s-backup-service:backup-infrastructure-cdc'
+include 'operational-services:a8s-backup-service:backup-dataaccess'
+include 'operational-services:a8s-backup-service:backup-message'
+include 'operational-services:a8s-backup-service:backup-main'
+
+// a8s-security-scanner
+include 'operational-services:a8s-security-scanner:security-api'
+include 'operational-services:a8s-security-scanner:security-domain:security-domain-core'
+include 'operational-services:a8s-security-scanner:security-domain:security-application-service'
+include 'operational-services:a8s-security-scanner:security-application'
+include 'operational-services:a8s-security-scanner:security-infrastructure-scanners'
+include 'operational-services:a8s-security-scanner:security-dataaccess'
+include 'operational-services:a8s-security-scanner:security-message'
+include 'operational-services:a8s-security-scanner:security-main'
+
+// a8s-monitoring-metrics-service
+include 'operational-services:a8s-monitoring-metrics-service:monitoring-domain:monitoring-domain-core'
+include 'operational-services:a8s-monitoring-metrics-service:monitoring-domain:monitoring-application-service'
+include 'operational-services:a8s-monitoring-metrics-service:monitoring-application'
+include 'operational-services:a8s-monitoring-metrics-service:monitoring-infrastructure-prometheus'
+include 'operational-services:a8s-monitoring-metrics-service:monitoring-dataaccess'
+include 'operational-services:a8s-monitoring-metrics-service:monitoring-main'
+
+// a8s-notification-service
+include 'operational-services:a8s-notification-service:notification-api'
+include 'operational-services:a8s-notification-service:notification-domain:notification-domain-core'
+include 'operational-services:a8s-notification-service:notification-domain:notification-application-service'
+include 'operational-services:a8s-notification-service:notification-application'
+include 'operational-services:a8s-notification-service:notification-infrastructure-channels'
+include 'operational-services:a8s-notification-service:notification-message'
+include 'operational-services:a8s-notification-service:notification-main'
+
+// a8s-audit-service
+include 'operational-services:a8s-audit-service:audit-api'
+include 'operational-services:a8s-audit-service:audit-domain:audit-domain-core'
+include 'operational-services:a8s-audit-service:audit-domain:audit-application-service'
+include 'operational-services:a8s-audit-service:audit-application'
+include 'operational-services:a8s-audit-service:audit-dataaccess'
+include 'operational-services:a8s-audit-service:audit-message'
+include 'operational-services:a8s-audit-service:audit-main'
+
+// a8s-ai-copilot-service
+include 'operational-services:a8s-ai-copilot-service:ai-domain:ai-domain-core'
+include 'operational-services:a8s-ai-copilot-service:ai-domain:ai-application-service'
+include 'operational-services:a8s-ai-copilot-service:ai-application'
+include 'operational-services:a8s-ai-copilot-service:ai-infrastructure-llm'
+include 'operational-services:a8s-ai-copilot-service:ai-dataaccess'
+include 'operational-services:a8s-ai-copilot-service:ai-main'

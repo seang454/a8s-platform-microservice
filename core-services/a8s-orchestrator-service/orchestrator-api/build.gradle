@@ -1,0 +1,2 @@
+plugins { id 'java-library' }
+dependencies { api project(':common-libraries:a8s-common-core') }

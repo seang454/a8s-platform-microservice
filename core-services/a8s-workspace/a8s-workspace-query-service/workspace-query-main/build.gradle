@@ -1,0 +1,12 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+}
+dependencies {
+    implementation project(':core-services:a8s-workspace:a8s-workspace-query-service:workspace-query-application')
+    implementation project(':core-services:a8s-workspace:a8s-workspace-query-service:workspace-query-dataaccess')
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+    implementation 'org.springframework.cloud:spring-cloud-starter-config'
+}

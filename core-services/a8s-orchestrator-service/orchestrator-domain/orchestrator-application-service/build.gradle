@@ -1,0 +1,5 @@
+plugins { id 'java-library' }
+dependencies {
+    api project(':core-services:a8s-orchestrator-service:orchestrator-domain:orchestrator-domain-core')
+    api project(':core-services:a8s-orchestrator-service:orchestrator-api')
+}

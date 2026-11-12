@@ -1,0 +1,5 @@
+plugins { id 'java-library' }
+dependencies {
+    api project(':core-services:a8s-git-integration-service:git-domain:git-application-service')
+    implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+}

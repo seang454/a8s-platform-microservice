@@ -1,0 +1,6 @@
+plugins { id 'java-library' }
+dependencies {
+    api project(':core-services:a8s-orchestrator-service:orchestrator-domain:orchestrator-application-service')
+    api 'org.springframework.boot:spring-boot-starter-data-jpa'
+    runtimeOnly 'org.postgresql:postgresql'
+}

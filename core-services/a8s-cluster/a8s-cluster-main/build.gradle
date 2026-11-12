@@ -1,0 +1,20 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+}
+
+dependencies {
+    implementation project(':core-services:a8s-cluster:a8s-cluster-api')
+    implementation project(':core-services:a8s-cluster:a8s-cluster-application')
+    implementation project(':core-services:a8s-cluster:a8s-cluster-domain')
+    implementation project(':core-services:a8s-cluster:a8s-cluster-dataaccess')
+    implementation project(':core-services:a8s-cluster:a8s-cluster-infrastructure-helm')
+    implementation project(':core-services:a8s-cluster:a8s-cluster-infrastructure-vault')
+    implementation project(':core-services:a8s-cluster:a8s-cluster-message')
+
+    implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+    implementation 'org.springframework.cloud:spring-cloud-starter-config'
+}

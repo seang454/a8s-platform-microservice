@@ -1,0 +1,4 @@
+plugins { id 'java-library' }
+dependencies {
+    api project(':core-services:a8s-workspace:a8s-workspace-api')
+}

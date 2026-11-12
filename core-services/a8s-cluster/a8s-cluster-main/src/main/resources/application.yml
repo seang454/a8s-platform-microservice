@@ -1,0 +1,3 @@
+spring:
+  application:
+    name: a8s-cluster-main

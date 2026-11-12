@@ -1,0 +1,6 @@
+plugins { id 'java-library' }
+dependencies {
+    api project(':core-services:a8s-workspace:a8s-workspace-command-service:workspace-command-domain:workspace-command-application-service')
+    api 'org.springframework.boot:spring-boot-starter-data-jpa'
+    runtimeOnly 'org.postgresql:postgresql'
+}

@@ -1,0 +1,14 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+}
+dependencies {
+    implementation project(':core-services:a8s-orchestrator-service:orchestrator-application')
+    implementation project(':core-services:a8s-orchestrator-service:orchestrator-dataaccess')
+    implementation project(':core-services:a8s-orchestrator-service:orchestrator-infrastructure-cicd')
+    implementation project(':core-services:a8s-orchestrator-service:orchestrator-message')
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+    implementation 'org.springframework.cloud:spring-cloud-starter-config'
+}

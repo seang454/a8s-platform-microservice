@@ -1,0 +1,8 @@
+plugins {
+    id 'java-library'
+}
+
+dependencies {
+    api 'org.apache.avro:avro:1.11.4'
+    api 'com.fasterxml.jackson.core:jackson-databind'
+}
