@@ -1,0 +1,52 @@
+services:
+  pg-itp-micro-db:
+    image: postgres:17.5-bullseye
+    container_name: pg-itp-micro-db
+    environment:
+      POSTGRES_USER: itpusr
+      POSTGRES_PASSWORD: itp@168
+    command:
+      - "postgres"
+      - "-c"
+      - "wal_level=logical"
+      - "-c"
+      - "max_replication_slots=10"
+      - "-c"
+      - "max_wal_senders=10"
+    ports:
+      - "16851:5432"
+    volumes:
+      - ./init_scripts/pg_itp_micro_init.sql:/docker-entrypoint-initdb.d/pg_itp_micro_init.sql:ro
+      - pg-itp-micro-vol:/var/lib/postgresql/data
+    networks:
+      - itp-net
+
+  pg-itp-iam-db:
+    image: postgres:17.5-bullseye
+    container_name: pg-itp-iam-db
+    environment:
+      POSTGRES_USER: itpusr
+      POSTGRES_PASSWORD: itp@168
+    command:
+      - "postgres"
+      - "-c"
+      - "wal_level=logical"
+      - "-c"
+      - "max_replication_slots=10"
+      - "-c"
+      - "max_wal_senders=10"
+    ports:
+      - "16852:5432"
+    volumes:
+      - ./init_scripts/pg_itp_iam_init.sql:/docker-entrypoint-initdb.d/pg_itp_iam_init.sql:ro
+      - pg-itp-iam-vol:/var/lib/postgresql/data
+    networks:
+      - itp-net
+
+volumes:
+  pg-itp-micro-vol:
+  pg-itp-iam-vol:
+
+networks:
+  itp-net:
+    external: true

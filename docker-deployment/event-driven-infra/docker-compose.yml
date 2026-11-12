@@ -1,0 +1,188 @@
+volumes:
+  kafka_1_itp_vol:
+  kafka_2_itp_vol:
+  kafka_3_itp_vol:
+  kafka-ui-itp-data:
+  schema_registry_itp_data:
+  debezium_plugins_itp:
+  debezium_data_itp:
+
+networks:
+  itp-net:
+    external: true
+
+
+services:
+  # Service for Debezium customized image
+  debezium-kafka-connect-itp:
+    build: .
+    image: debezium-kafka-connect-itp
+    container_name: debezium-kafka-connect-itp
+    depends_on:
+      - kafka-1-itp
+      - kafka-2-itp
+      - kafka-3-itp
+      - schema-registry-itp
+    ports:
+      - "8083:8083"
+    environment:
+
+      # Base Configuration
+      GROUP_ID: cdc_connect-group
+      BOOTSTRAP_SERVERS: "kafka-1-itp:9090,kafka-2-itp:9090,kafka-3-itp:9090"
+
+      # Storage Topics Configuration
+      CONFIG_STORAGE_TOPIC: cdc_connect_configs
+      OFFSET_STORAGE_TOPIC: cdc_connect_offsets
+      STATUS_STORAGE_TOPIC: cdc_connect_status
+
+      # Schema Registry Integration:
+      KEY_CONVERTER: io.confluent.connect.avro.AvroConverter #### add when add avro schema registry
+      VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter #### add when add avro schema registry
+      CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: http://schema-registry-itp:8081 #### add when add avro schema registry
+      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://schema-registry-itp:8081 #### add when add avro schema registry
+      #KEY_CONVERTER: org.apache.kafka.connect.storage.StringConverter
+      #VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+
+    volumes:
+      - debezium_plugins_itp:/kafka/connect/plugins
+      - debezium_data_itp:/kafka/data
+    networks:
+      - itp-net
+  # Service for schema registry
+  schema-registry-itp:
+    image: confluentinc/cp-schema-registry:7.8.0
+    container_name: schema-registry-itp
+    ports:
+      - "8081:8081"
+    depends_on:
+      - kafka-1-itp
+      - kafka-2-itp
+      - kafka-3-itp
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry-itp
+      SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
+      SCHEMA_REGISTRY_DEBUG: "true"
+      SCHEMA_REGISTRY_KAFKASTORE_TOPIC: _schemas
+      SCHEMA_REGISTRY_KAFKASTORE_TOPIC_REPLICATION_FACTOR: 3
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: "kafka-1-itp:9090,kafka-2-itp:9090,kafka-3-itp:9090"
+    volumes:
+      - schema_registry_itp_data:/etc/schema-registry/data
+    networks:
+      - itp-net
+  kafka-1-itp:
+    image: confluentinc/cp-kafka:7.8.0
+    container_name: kafka-1-itp
+    ports:
+      - "29092:9092"
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: 'broker,controller'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT'
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka-1-itp:9091,2@kafka-2-itp:9091,3@kafka-3-itp:9091'
+      KAFKA_LISTENERS: 'PLAINTEXT://:9090,CONTROLLER://kafka-1-itp:9091,EXTERNAL://:9092'
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-1-itp:9090,EXTERNAL://localhost:29092
+      KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      CLUSTER_ID: '4L6g3nShT-eMCtK--X86sw'
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
+    volumes:
+      - kafka_1_itp_vol:/var/lib/kafka/data
+    networks:
+      - itp-net
+  kafka-2-itp:
+    image: confluentinc/cp-kafka:7.8.0
+    container_name: kafka-2-itp
+    ports:
+      - "29094:9094"
+    environment:
+      KAFKA_NODE_ID: 2
+      KAFKA_PROCESS_ROLES: 'broker,controller'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT'
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka-1-itp:9091,2@kafka-2-itp:9091,3@kafka-3-itp:9091'
+      KAFKA_LISTENERS: 'PLAINTEXT://:9090,CONTROLLER://kafka-2-itp:9091,EXTERNAL://:9094'
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-2-itp:9090,EXTERNAL://localhost:29094
+      KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      CLUSTER_ID: '4L6g3nShT-eMCtK--X86sw'
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
+    volumes:
+      - kafka_2_itp_vol:/var/lib/kafka/data
+    networks:
+      - itp-net
+  kafka-3-itp:
+    image: confluentinc/cp-kafka:7.8.0
+    container_name: kafka-3-itp
+    ports:
+      - "29096:9096"
+    environment:
+      KAFKA_NODE_ID: 3
+      KAFKA_PROCESS_ROLES: 'broker,controller'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT'
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka-1-itp:9091,2@kafka-2-itp:9091,3@kafka-3-itp:9091'
+      KAFKA_LISTENERS: 'PLAINTEXT://:9090,CONTROLLER://kafka-3-itp:9091,EXTERNAL://:9096'
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-3-itp:9090,EXTERNAL://localhost:29096
+      KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      CLUSTER_ID: '4L6g3nShT-eMCtK--X86sw'
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
+    volumes:
+      - kafka_3_itp_vol:/var/lib/kafka/data
+    networks:
+      - itp-net
+  kafka-ui-itp:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kafka-ui-itp
+    ports:
+      - "18000:8080"
+    environment:
+      # Basic Auth for UI (optional but recommended)
+      AUTH_TYPE: "LOGIN_FORM"
+      SPRING_SECURITY_USER_NAME: admin
+      SPRING_SECURITY_USER_PASSWORD: qwer
+
+      # Kafka Cluster Configuration
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: "kafka-1-itp:9090,kafka-2-itp:9090,kafka-3-itp:9090"
+
+      # Schema Registry Configuration
+      KAFKA_CLUSTERS_0_SCHEMAREGISTRY: http://schema-registry-itp:8081
+
+      # Kafka Connect Configuration
+      KAFKA_CLUSTERS_0_KAFKACONNECT_0_NAME: debezium-kafka-connect-itp
+      KAFKA_CLUSTERS_0_KAFKACONNECT_0_ADDRESS: http://debezium-kafka-connect-itp:8083
+    volumes:
+      - kafka-ui-itp-data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:18000/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    depends_on:
+      - kafka-1-itp
+      - kafka-2-itp
+      - kafka-3-itp
+      - schema-registry-itp
+      - debezium-kafka-connect-itp
+    # Resource limits for stability
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '1.0'
+        reservations:
+          memory: 1G
+          cpus: '0.5'
+    networks:
+      - itp-net

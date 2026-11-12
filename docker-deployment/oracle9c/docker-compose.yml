@@ -1,0 +1,21 @@
+services:
+  oracle-itp:
+    image: container-registry.oracle.com/database/enterprise:19.3.0.0
+    container_name: oracle-itp
+    ports:
+      - "1521:1521"
+    environment:
+      ORACLE_PWD: Oracle@168
+      ENABLE_ARCHIVELOG: true
+    volumes:
+      - ./init_scripts:/opt/oracle/scripts/startup
+      - oracle_data_itp:/opt/oracle/oradata
+    networks:
+      - itp-net
+
+volumes:
+  oracle_data_itp:
+
+networks:
+  itp-net:
+    external: true

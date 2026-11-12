@@ -1,0 +1,27 @@
+services:
+  itp-redis:
+    image: redis:8-alpine
+    container_name: itp-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - itp_redis_data:/data
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+    command: redis-server /usr/local/etc/redis/redis.conf
+    environment:
+      - REDIS_REPLICATION_MODE=master
+    networks:
+      - itp-net
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  itp_redis_data:
+
+networks:
+  itp-net:
+    external: true
