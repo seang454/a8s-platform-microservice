@@ -8,7 +8,7 @@ services:
       ORACLE_PWD: Oracle@168
       ENABLE_ARCHIVELOG: true
     volumes:
-      - ./init_scripts:/opt/oracle/scripts/startup
+#      - ./init_scripts:/opt/oracle/scripts/startup
       - oracle_data_itp:/opt/oracle/oradata
     networks:
       - itp-net
