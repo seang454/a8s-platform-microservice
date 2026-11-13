@@ -105,7 +105,7 @@ Ensure your project root `.gitignore` contains these lines:
 
 ```gitignore
 # Compiled build outputs:
-build/
+../build/
 bin/
 out/
 
