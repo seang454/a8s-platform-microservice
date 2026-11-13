@@ -9,7 +9,7 @@ services:
       MONGO_INITDB_ROOT_USERNAME: itpusr
       MONGO_INITDB_ROOT_PASSWORD: itp@168
     healthcheck:
-      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      test: ["CMD", "mongosh", "--quiet", "-u", "itpusr", "-p", "itp@168", "--authenticationDatabase", "admin", "--eval", "db.adminCommand('ping')"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -31,7 +31,7 @@ services:
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: itpusr
       ME_CONFIG_MONGODB_ADMINPASSWORD: itp@168
-      ME_CONFIG_MONGODB_URL: mongodb://itpusr:itp@168@mongodb-itp:27017/
+      ME_CONFIG_MONGODB_URL: mongodb://itpusr:itp%40168@mongodb-itp:27017/?authSource=admin
       ME_CONFIG_BASICAUTH_USERNAME: admin
       ME_CONFIG_BASICAUTH_PASSWORD: qwer
     depends_on:
