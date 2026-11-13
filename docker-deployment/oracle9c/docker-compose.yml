@@ -18,4 +18,4 @@ volumes:
 
 networks:
   itp-net:
-    external: true
+    name: itp-net
