@@ -14,4 +14,4 @@ services:
       - vault-net
 networks:
   vault-net:
-    external: true
+    name: vault-net
