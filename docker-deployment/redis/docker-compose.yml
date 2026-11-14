@@ -10,6 +10,10 @@ services:
     command: redis-server /usr/local/etc/redis/redis.conf
     environment:
       - REDIS_REPLICATION_MODE=master
+    deploy:
+      resources:
+        limits:
+          memory: 128M
     networks:
       - itp-net
     healthcheck:

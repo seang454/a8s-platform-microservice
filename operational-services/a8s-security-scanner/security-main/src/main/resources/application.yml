@@ -1,3 +1,6 @@
+server:
+  port: 20274
+
 spring:
   application:
     name: security-main

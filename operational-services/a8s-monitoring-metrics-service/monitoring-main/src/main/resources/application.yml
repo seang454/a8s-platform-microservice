@@ -1,3 +1,6 @@
+server:
+  port: 20275
+
 spring:
   application:
     name: monitoring-main

@@ -1,3 +1,6 @@
+server:
+  port: 20265
+
 spring:
   application:
     name: git-main

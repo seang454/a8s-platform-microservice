@@ -1,3 +1,6 @@
+server:
+  port: 20271
+
 spring:
   application:
     name: audit-main

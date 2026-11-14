@@ -1,3 +1,6 @@
+server:
+  port: 20273
+
 spring:
   application:
     name: backup-main

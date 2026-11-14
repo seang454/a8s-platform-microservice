@@ -10,6 +10,10 @@ services:
     cap_add:
       - IPC_LOCK
     command: vault server -dev
+    deploy:
+      resources:
+        limits:
+          memory: 192M
     networks:
       - vault-net
 networks:

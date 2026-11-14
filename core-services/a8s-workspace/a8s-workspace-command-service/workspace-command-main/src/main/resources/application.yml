@@ -1,3 +1,6 @@
+server:
+  port: 20261
+
 spring:
   application:
     name: workspace-command-main

@@ -1,3 +1,6 @@
+server:
+  port: 20269
+
 spring:
   application:
     name: terminal-main

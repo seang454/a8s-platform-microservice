@@ -1,3 +1,6 @@
+server:
+  port: 20263
+
 spring:
   application:
     name: dbaas-command-main

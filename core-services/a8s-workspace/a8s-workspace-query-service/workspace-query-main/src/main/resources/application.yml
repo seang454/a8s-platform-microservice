@@ -1,3 +1,6 @@
+server:
+  port: 20262
+
 spring:
   application:
     name: workspace-query-main

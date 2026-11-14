@@ -1,3 +1,6 @@
+server:
+  port: 20268
+
 spring:
   application:
     name: dns-main

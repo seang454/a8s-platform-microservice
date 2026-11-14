@@ -41,12 +41,18 @@ services:
       VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter #### add when add avro schema registry
       CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: http://schema-registry-itp:8081 #### add when add avro schema registry
       CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://schema-registry-itp:8081 #### add when add avro schema registry
+      # JVM Heap memory tuning for 8GB host
+      KAFKA_JVM_PERFORMANCE_OPTS: "-Xms256m -Xmx512m"
       #KEY_CONVERTER: org.apache.kafka.connect.storage.StringConverter
       #VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
 
     volumes:
       - debezium_plugins_itp:/kafka/connect/plugins
       - debezium_data_itp:/kafka/data
+    deploy:
+      resources:
+        limits:
+          memory: 512M
     networks:
       - itp-net
   # Service for schema registry
@@ -66,8 +72,13 @@ services:
       SCHEMA_REGISTRY_KAFKASTORE_TOPIC: _schemas
       SCHEMA_REGISTRY_KAFKASTORE_TOPIC_REPLICATION_FACTOR: 3
       SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: "kafka-1-itp:9090,kafka-2-itp:9090,kafka-3-itp:9090"
+      SCHEMA_REGISTRY_HEAP_OPTS: "-Xms128m -Xmx256m"
     volumes:
       - schema_registry_itp_data:/etc/schema-registry/data
+    deploy:
+      resources:
+        limits:
+          memory: 384M
     networks:
       - itp-net
   kafka-1-itp:
@@ -89,8 +100,13 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
+      KAFKA_JVM_PERFORMANCE_OPTS: "-Xms256m -Xmx384m"
     volumes:
       - kafka_1_itp_vol:/var/lib/kafka/data
+    deploy:
+      resources:
+        limits:
+          memory: 512M
     networks:
       - itp-net
   kafka-2-itp:
@@ -113,8 +129,13 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
+      KAFKA_JVM_PERFORMANCE_OPTS: "-Xms256m -Xmx384m"
     volumes:
       - kafka_2_itp_vol:/var/lib/kafka/data
+    deploy:
+      resources:
+        limits:
+          memory: 512M
     networks:
       - itp-net
   kafka-3-itp:
@@ -137,8 +158,13 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
+      KAFKA_JVM_PERFORMANCE_OPTS: "-Xms256m -Xmx384m"
     volumes:
       - kafka_3_itp_vol:/var/lib/kafka/data
+    deploy:
+      resources:
+        limits:
+          memory: 512M
     networks:
       - itp-net
   kafka-ui-itp:
@@ -175,14 +201,14 @@ services:
       - kafka-3-itp
       - schema-registry-itp
       - debezium-kafka-connect-itp
-    # Resource limits for stability
+    # Resource limits for stability (tuned for 8GB host)
     deploy:
       resources:
         limits:
-          memory: 2G
-          cpus: '1.0'
-        reservations:
-          memory: 1G
+          memory: 384M
           cpus: '0.5'
+        reservations:
+          memory: 256M
+          cpus: '0.2'
     networks:
       - itp-net
